@@ -43,12 +43,20 @@ namespace CleanArchMvc.Domain.Tests
         }
 
         [Fact(DisplayName = "Create Product With Short Description Value")]
-        public void CreateProduct_ShortDescription_DomainExcpetionInvalidDescription()
+        public void CreateProduct_WithShortDescription_DomainExcpetionInvalidDescription()
         {
             Action action = () => new Product(1, "Product Name", "Desc", 500.0m, 5, "Product Image");
             action.Should()
                 .Throw<CleanArchMvc.Domain.Validation.DomainExceptionValidation>()
                 .WithMessage("Invalid description, too short, minimum 3 characters.");
+        }
+
+        [Fact(DisplayName = "Create Product With Null Description Value")]
+        public void CreateProduct_WithNullDescription_NoNullReferenceExcepetion()
+        {
+            Action action = () => new Product(1, "Product Name", null, 500.0m, 5, "Product Image");
+            action.Should()
+                .NotThrow<NullReferenceException>();
         }
 
         [Fact(DisplayName = "Create Product With Invalid Price Value")]
@@ -85,6 +93,14 @@ namespace CleanArchMvc.Domain.Tests
             Action action = () => new Product(1, "Product Name", "Description", 500.0m, 5, null);
             action.Should()
                 .NotThrow<CleanArchMvc.Domain.Validation.DomainExceptionValidation>();
+        }
+
+        [Fact(DisplayName = "Create Product With Null Image Name Value")]
+        public void CreateProduct_WithNullImageName_NoNullReferenceExcepetion()
+        {
+            Action action = () => new Product(1, "Product Name", "Description", 500.0m, 5, null);
+            action.Should()
+                .NotThrow<NullReferenceException>();
         }
 
         [Fact(DisplayName = "Create Product With Empty Image Name Value")]
