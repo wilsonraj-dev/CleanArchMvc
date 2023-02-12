@@ -10,8 +10,8 @@ namespace CleanArchMvc.Application.Services
 {
     public class CategoryService : ICategoryService
     {
-        ICategoryRepository _categoryRepository;
-        IMapper _mapper;
+        private ICategoryRepository _categoryRepository;
+        private readonly IMapper _mapper;
 
         public CategoryService(ICategoryRepository categoryRepository, IMapper mapper)
         {
