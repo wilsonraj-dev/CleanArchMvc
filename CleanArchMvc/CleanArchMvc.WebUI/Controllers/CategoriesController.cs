@@ -1,6 +1,7 @@
 ﻿using CleanArchMvc.Application.DTOs;
 using CleanArchMvc.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace CleanArchMvc.WebUI.Controllers
@@ -21,7 +22,6 @@ namespace CleanArchMvc.WebUI.Controllers
             return View(categories);
         }
 
-        #region Create
         [HttpGet()]
         public IActionResult Create()
         {
@@ -39,6 +39,38 @@ namespace CleanArchMvc.WebUI.Controllers
 
             return View(category);
         }
-        #endregion
+
+        [HttpGet()]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var categoryDTO = await _categoryService.GetById(id);
+
+            if (categoryDTO == null)
+                return NotFound();
+
+            return View(categoryDTO);
+        }
+
+        [HttpPost()]
+        public async Task<IActionResult> Edit(CategoryDTO categoryDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _categoryService.Update(categoryDTO);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View(categoryDTO);
+        }
     }
 }
