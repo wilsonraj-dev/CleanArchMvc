@@ -15,13 +15,16 @@ namespace CleanArchMvc.WebUI.Controllers
             _categoryService = categoryService;
         }
 
+        #region Index
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var categories = await _categoryService.GetCategories();
             return View(categories);
         }
+        #endregion
 
+        #region Create
         [HttpGet()]
         public IActionResult Create()
         {
@@ -39,7 +42,9 @@ namespace CleanArchMvc.WebUI.Controllers
 
             return View(category);
         }
+        #endregion
 
+        #region Edit
         [HttpGet()]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -72,5 +77,28 @@ namespace CleanArchMvc.WebUI.Controllers
             }
             return View(categoryDTO);
         }
+        #endregion
+
+        #region Delete
+        [HttpGet()]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var categoryDTO = await _categoryService.GetById(id);
+            if (categoryDTO == null)
+                return NotFound();
+
+            return View(categoryDTO);
+        }
+
+        [HttpPost(), ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await _categoryService.Remove(id);
+            return RedirectToAction("Index");
+        }
+        #endregion
     }
 }
