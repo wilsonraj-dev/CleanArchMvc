@@ -1,10 +1,6 @@
 ﻿using CleanArchMvc.Domain.Account;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchMvc.Infra.Data.Identity
 {
@@ -13,13 +9,14 @@ namespace CleanArchMvc.Infra.Data.Identity
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public SeedUserRoleInitial(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public SeedUserRoleInitial(RoleManager<IdentityRole> roleManager,
+              UserManager<ApplicationUser> userManager)
         {
-            _userManager = userManager;
             _roleManager = roleManager;
+            _userManager = userManager;
         }
 
-        public void SeedRoles()
+        public void SeedUsers()
         {
             if (_userManager.FindByEmailAsync("usuario@localhost").Result == null)
             {
@@ -40,7 +37,6 @@ namespace CleanArchMvc.Infra.Data.Identity
                 }
             }
 
-
             if (_userManager.FindByEmailAsync("admin@localhost").Result == null)
             {
                 ApplicationUser user = new ApplicationUser();
@@ -59,9 +55,10 @@ namespace CleanArchMvc.Infra.Data.Identity
                     _userManager.AddToRoleAsync(user, "Admin").Wait();
                 }
             }
+
         }
 
-        public void SeedUsers()
+        public void SeedRoles()
         {
             if (!_roleManager.RoleExistsAsync("User").Result)
             {

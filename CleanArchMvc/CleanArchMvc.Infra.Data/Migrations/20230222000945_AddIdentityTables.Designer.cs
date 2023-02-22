@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchMvc.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230221003326_AddIdentityTables")]
+    [Migration("20230222000945_AddIdentityTables")]
     partial class AddIdentityTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
