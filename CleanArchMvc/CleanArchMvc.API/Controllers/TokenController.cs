@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchMvc.API.Controllers
 {
-    [Route("pedidoVenda/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TokenController : ControllerBase
     {
@@ -36,6 +36,23 @@ namespace CleanArchMvc.API.Controllers
             else
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return BadRequest(ModelState);
+            }
+        }
+
+        [HttpPost("CreateUser")]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<ActionResult> CreateUser([FromBody] LoginModel userInfo)
+        {
+            var result = await _authenticate.RegisterUser(userInfo.Email, userInfo.Password);
+
+            if (result)
+            {
+                return Ok($"User {userInfo.Email} was create successfully");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt");
                 return BadRequest(ModelState);
             }
         }
